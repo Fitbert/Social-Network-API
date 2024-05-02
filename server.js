@@ -1,29 +1,36 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const connectDB = require('./config/connection');
+const routes = require('./routes');
 
-mongoose.connect(process.env.MONGODB_URI ||'mongodb://localhost:27017/test', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true
-});
-
-const db = mongoose.connection;
-
-db.on('error', console.error.bind(console, 'connection error:'));
-
-db.once('open', () => {
+// Set the 'strictQuery' option to false to suppress the deprecation warning
+mongoose.set('strictQuery', false);
+// Connect to MongoDB
+connectDB()
+  .then(() => {
     console.log('Connected to MongoDB');
-});
 
-const Schema = mongoose.Schema;
+    // Start your server or perform other operations that depend on the database connection
+    const app = express();
+    const PORT = process.env.PORT || 3001;
 
+    // Middleware
+    app.use(express.json());
+    app.use(express.urlencoded({ extended: true }));
 
-const app = express();
-const PORT = process.env.PORT || 3001;
+    // Routes
+    app.use(routes);
 
-app.get('/', (req, res) => {
-    res.send('Welcome to the backend app!');
-});
+    app.get('/', (req, res) => {
+      res.send('Welcome to the backend app!');
+    });
 
-app.listen(PORT, () => {
-    console.log(`Server running on port ${PORT}`);
-});
+    app.listen(PORT, () => {
+      console.log(`Server running on port ${PORT}`);
+    });
+  })
+  .catch((err) => {
+    console.error('Error connecting to MongoDB:', err);
+    process.exit(1);
+  });
+  process.env.NODE_NO_WARNINGS = 1;
