@@ -55,7 +55,7 @@ const userController = {
       res.status(500).json(err);
     }
   },
-  // Delete a user and associated apps
+  // Delete a user and associated thoughts
   async deleteUser(req, res) {
     try {
       const user = await User.findOneAndDelete({ _id: req.params.userId });

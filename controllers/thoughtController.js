@@ -76,14 +76,24 @@ const thoughtController = {
   // Add reaction to thought
   async addReaction(req, res) {
     try {
-      const thought = await Thought.findOneAndUpdate({_id: req.params.thoughtId});
-      thought.reactions.push(req.body);
-      await thought.save();
+      const { reactionBody, username } = req.body; // Extract necessary fields from the request body
+      const thought = await Thought.findByIdAndUpdate(
+        req.params.thoughtId,
+        { $push: { reactions: { reactionBody, username } } }, // Push a new reaction object to the reactions array
+        { new: true } // Return the updated document
+      );
+  
+      if (!thought) {
+        return res.status(404).json({ message: 'Thought not found' });
+      }
+  
       res.json(thought);
     } catch (err) {
-      res.status(400).json(err);
+      console.error('Error adding reaction:', err);
+      res.status(400).json({ message: 'Error adding reaction' });
     }
   },
+  
 
   // Remove reaction from thought
   async removeReaction(req, res) {
