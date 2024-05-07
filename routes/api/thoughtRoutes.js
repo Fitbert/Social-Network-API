@@ -7,7 +7,7 @@ const {
     deleteThought,
     addReaction,
     removeReaction
-} = require('../../controllers/thought-controller');
+} = require('../../controllers/thoughtController.js');
 
 // Get all thoughts and create a new thought
 router.route('/')
@@ -15,7 +15,7 @@ router.route('/')
     .post(createThought);
 
 // Get, update, and delete a thought by its ID
-router.route('/:id')
+router.route('/:thoughtId')
     .get(getThoughtById)
     .put(updateThought)
     .delete(deleteThought);
