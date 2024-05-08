@@ -11,8 +11,6 @@ Social Network API challenge
 
 - [Live-Screen-Recording-of-Application-Functionality](#live-screen-recording-of-application-functionality)
 
-- [Screenshots](#screenshots)
-
 - [Technologies-Used](#technologies-used)
 
 - [Installation](#installation)
@@ -34,11 +32,7 @@ Social Network API challenge
 This application was created as the start of a full stack social network application using a MongoDB database, Express.js routing, and the Mongoose ODM. It sets up the initial CRUD API routes for said application which allow users to be created, searched for, updated, and deleted. Users can also share their thoughts, react to friends' thoughts, create a friend list, and subsequently delete thoughts, reactions, friends, and themselves as a user. Although this application is still at the ground floor of its full potential, the MongoDB database and API middleware routing is an integral first step in leaning about the potential of MongoDB and the Mongoose ODM.
 
 ## Live Screen Recording
-
-
-## Screenshots
-
-
+[text](https://drive.google.com/file/d/19yY0xHe_W3GQE119RuqZNK5iuWrzbMNj/view?usp=sharing)
 
 ## Technologies Used
 
