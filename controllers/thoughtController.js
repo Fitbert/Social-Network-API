@@ -45,13 +45,17 @@ const thoughtController = {
   // Update thought
   async updateThought(req, res) {
     try {
-      const thought = await Thought.findOneAndUpdate(req.params.id, req.body, { new: true });
-      
+      const thought = await Thought.findOneAndUpdate(
+        { _id: req.params.thoughtId }, // Change this line
+        req.body,
+        { new: true }
+      );
+  
       if (!thought) {
         console.log('Thought not found.');
         return res.status(404).json({ message: 'Thought not found.' });
       }
-      
+  
       console.log('Thought updated successfully:', thought);
       return res.json(thought);
     } catch (err) {
@@ -64,13 +68,26 @@ const thoughtController = {
   // Delete thought and remove it from user's thoughts
   async deleteThought(req, res) {
     try {
-      const thought = await Thought.findOneAndDelete({_id: req.params.thoughtId});
-      const user = await User.findOne({username : thought.username});
-      user.thoughts = user.thoughts.filter(thoughtId => thoughtId.toString() !== req.params.id);
-      await user.save();
-      res.json(thought);
+      const thought = await Thought.findOneAndDelete({username: req.body.username});
+  
+      if (!thought) {
+        return res.status(404).json({ message: 'No thought found with this id' });
+      }
+  
+      const user = await User.findOneAndUpdate(
+        { username: thought.username },
+        { $pull: { thoughts: req.params.thoughtId } },
+        { new: true }
+      );
+  
+      if (!user) {
+        return res.status(404).json({ message: 'User not found' });
+      }
+  
+      // res.json({ message: 'Thought deleted successfully' });
     } catch (err) {
-      res.status(400).json(err);
+      console.error(err);
+      res.status(500).json({ message: 'Internal server error' });
     }
   },
 
